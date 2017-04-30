@@ -19,6 +19,8 @@ cp -f $PROJECT_PATH/apache-default.conf /etc/apache2/sites-enabled/000-default.$
 cp -f $PROJECT_PATH/index.html /var/www/html/index.html
 cp -f $PROJECT_PATH/index.php /var/www/html/index.php
 cp -f $PROJECT_PATH/phpinfo.php /var/www/html/phpinfo.php
+mkdir /var/www/html/sysinfo
+cp -f $PROJECT_PATH/sysinfo.php /var/www/html/sysinfo/index.php
 
 echo -e "${GRE}Restarting servers ... ${NCC}"
 systemctl start apache2
