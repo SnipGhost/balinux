@@ -8,9 +8,9 @@
 		<h1>Test sysinfo</h1>
 
 		<pre>
-			<?php
-				echo system("top -b -n 1 | head -n 15");
-			?>
+<?php
+			echo system("top -b -n 1 | head -n 15");
+?>
 		</pre>
 
 	</body>

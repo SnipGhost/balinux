@@ -4,6 +4,11 @@ RED='\033[0;31m'
 GRE='\033[0;32m'
 NCC='\033[0m'
 
+if [[ $EUID -ne 0 ]]; then
+    echo -e "${RED}This script must be run as root${NCC}"
+    exit 1
+fi
+
 BASEDIR=`dirname $0`
 PROJECT_PATH=`cd $BASEDIR; pwd`
 echo -e "${RED}Using path: ${PROJECT_PATH} ${NCC}"
@@ -37,3 +42,5 @@ echo -e "\n404 test pages: "
 echo -e "Static  page: ${GRE}http://127.0.0.1:80/index.txt${NCC}"
 echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/index.cgi${NCC}"
 echo -e "\n${RED}Recommend to use ${GRE}elinks${RED} for color mapping${NCC}\n"
+
+exit 0
