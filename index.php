@@ -10,6 +10,8 @@
 		<h3 style="text-align: right; margin-top: 20px;">
 			Your very clever friend, <span style="color: red;">Apache2</span>.
 		</h3>
-		<?php phpinfo(); ?>
+		<h3 style="text-align: right; margin-top: 20px;">
+			<?php echo $_SERVER['SERVER_SOFTWARE']; ?>
+		</h3>
 	</body>
 </html>
