@@ -13,5 +13,13 @@
 		<h3 style="text-align: right; margin-top: 20px;">
 			<?php echo $_SERVER['SERVER_SOFTWARE']; ?>
 		</h3>
+		<br>
+		<pre>
+<?php
+	foreach (getallheaders() as $name => $value) {
+		echo "$name: $value\n";
+	}
+?>
+		</pre>
 	</body>
 </html>

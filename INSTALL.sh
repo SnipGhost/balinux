@@ -12,7 +12,7 @@ apt install -y sysstat elinks apache2 libapache2-mod-php
 systemctl stop apache2
 apt install -y nginx
 
-echo -e "${RED}Starting to copy configuration files${NCC}"
+echo -e "${GRE}Starting to copy configuration files${NCC}"
 cp -f $PROJECT_PATH/nginx-default.conf /etc/nginx/sites-enabled/default
 cp -f $PROJECT_PATH/apache-ports.conf /etc/apache2/ports.conf
 cp -f $PROJECT_PATH/apache-default.conf /etc/apache2/sites-enabled/000-default.$
@@ -20,11 +20,11 @@ cp -f $PROJECT_PATH/index.html /var/www/html/index.html
 cp -f $PROJECT_PATH/index.php /var/www/html/index.php
 cp -f $PROJECT_PATH/phpinfo.php /var/www/html/phpinfo.php
 
-echo -e "${RED}Restarting servers ... ${NCC}"
+echo -e "${GRE}Restarting servers ... ${NCC}"
 systemctl start apache2
 systemctl restart nginx
 
-echo -e "${RED}END OF SCRIPT${NCC}\n"
+echo -e "${GRE}END OF SCRIPT${NCC}\n"
 netstat -nlpt
 
 echo -e "\nTest pages: "
