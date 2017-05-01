@@ -1,2 +1,3 @@
 # crontab for web-sysinfo user
   * *  *   *   *  echo "hello" | wall
+
