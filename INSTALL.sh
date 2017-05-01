@@ -42,7 +42,10 @@ if [ $? != "0" ]; then
 fi
 
 echo -e "${GRE}Starting to copy scripts to ${SCRIPTS_DIR} ...${NCC}"
-mkdir $SCRIPTS_DIR
+mkdir -p $SCRIPTS_DIR
+mkdir -p /var/www/html/sysinfo
+touch $INI_CONFIG
+# [1] LOADAVG
 cp -f $PROJECT_PATH/loadavg.sh $SCRIPTS_DIR/loadavg.sh
 printf "loadavg=${SCRIPTS_DIR}/loadavg.sh\n" >> $INI_CONFIG
 # TODO: iostat, netstat, toptlk, netconnections, cpu, disks
@@ -62,7 +65,6 @@ cp -f $PROJECT_PATH/apache-default.conf /etc/apache2/sites-enabled/000-default.$
 cp -f $PROJECT_PATH/index.html /var/www/html/index.html
 cp -f $PROJECT_PATH/index.php /var/www/html/index.php
 cp -f $PROJECT_PATH/phpinfo.php /var/www/html/phpinfo.php
-mkdir /var/www/html/sysinfo
 cp -f $PROJECT_PATH/sysinfo.php /var/www/html/sysinfo/index.php
 
 echo -e "${GRE}Restarting servers ... ${NCC}"
