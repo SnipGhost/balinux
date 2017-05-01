@@ -9,10 +9,11 @@ p=$(cat /proc/cpuinfo | grep -i 'core id' | wc -l)
 # cat /proc/loadavg | awk -F " " '{print " Load Average: "$1" "$2" "$3}'
 #--------------------------------------------------------------------------------------------------------------------------------
 # Прогрессивно вытягиваем данные из аптайма
-uptime | awk -v LIM1=0.5 -vLIM2=0.9 -v PROCC=$p -F " " '{   print $1" "$2" "$3" "$4" "$5" "$6" "$7"<table border=\"1\"><tr>";   \
-															na = substr($8, 1, length($8)-1);                                   \
-					                                 		nb = substr($9, 1, length($9)-1);                                   \
-					                                 		nc = $10;                                                           \
+uptime | awk -v LIM1=0.5 -vLIM2=0.9 -v PROCC=$p -F " " '{ print "<table border=\"1\"><tr><td>";                                 \
+															print $1" "$2" "$3" "$4" "$5" "$6" "$7" "$8"</td>";                 \
+															na = substr($9, 1, length($9)-1);                                   \
+					                                 		nb = substr($10, 1, length($10)-1);                                 \
+					                                 		nc = $11;                                                           \
 					                                 		{ if (na/PROCC > LIM1)                                              \
 					                                 		  { if (na/PROCC > LIM2) print "<td style=\"color: red;\">";        \
 					                                 		    else print "<td style=\"color: orange;\">"; }                   \

@@ -49,6 +49,7 @@ touch $INI_CONFIG
 cp -f $PROJECT_PATH/loadavg.sh $SCRIPTS_DIR/loadavg.sh
 printf "loadavg=${SCRIPTS_DIR}/loadavg.sh\n" >> $INI_CONFIG
 # TODO: iostat, netstat, toptlk, netconnections, cpu, disks
+chmod +x $SCRIPTS_DIR/*
 
 echo -e "${GRE}Adding crontab for ${USERNAME} ...${NCC}"
 crontab -l -u $USERNAME | cat - $PROJECT_PATH/automatic.cron | crontab -u $USERNAME -
