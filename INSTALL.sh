@@ -19,18 +19,30 @@ echo -e "${RED}Using path: ${PROJECT_PATH} ${NCC}"
 echo -e "${GRE}Creating user sysinfo ...${NCC}"
 useradd -m -c "User for web-sysinfo" $USERNAME
 passwd -d $USERNAME
-# TODO: Locate tcpdump!
-printf "\n# User for web-sysinfo [!]\n${USERNAME} ALL=NOPASSWD: /usr/sbin/tcpdump\n" >> /etc/sudoers
+
+# Locate TCPDUMP and TIMEOUT
+cmd1=$(whereis tcpdump | awk -F " " '{ print $2 }')
+cmd1=$(whereis timeout | awk -F " " '{ print $2 }')
+
+echo -e "${GRE}Trying to add record to /etc/sudoers ...${NCC}"
+printf "\n# User for web-sysinfo [!]\n${USERNAME} ALL=NOPASSWD: ${cmd1}, ${cmd2}\n" >> /etc/sudoers
 if [ $? != "0" ]; then
-	echo -e "$(GRE)Please login as root:$(NCC)"
+	echo -e "${RED}Please login as root:${NCC}"
 	su -
 	sig=$?
-	printf "\n# User for web-sysinfo [!]\n${USERNAME} ALL=NOPASSWD: /usr/sbin/tcpdump\n" >> /etc/sudoers
+	printf "\n# User for web-sysinfo [!]\n${USERNAME} ALL=NOPASSWD: ${cmd1}, ${cmd2}\n" >> /etc/sudoers
+	if [ $? != "0" ]; then
+		echo -e "${RED}Couldn't change file: /etc/sudoers${NCC}"
+	fi
 	if [ $sig == "0" ]; then
 		exit
 	fi
 fi
 
+echo -e "${GRE}Adding crontab for ${USERNAME} ...${NCC}"
+crontab -l -u $USERNAME | cat - $PROJECT_PATH/automatic.cron | crontab -u $USERNAME -
+
+echo -e "${GRE}Installing apache2+php and nginx ...${NCC}"
 apt install -y sysstat elinks apache2 libapache2-mod-php
 systemctl stop apache2
 apt install -y nginx
