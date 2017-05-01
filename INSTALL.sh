@@ -1,17 +1,35 @@
 #!/bin/bash
 
+USERNAME="sysinfo"
+
 RED='\033[0;31m'
 GRE='\033[0;32m'
 NCC='\033[0m'
 
-if [[ $EUID -ne 0 ]]; then
-    echo -e "${RED}This script must be run as root${NCC}"
-    exit 1
+# Check the script is being run by root
+if [ "$(id -u)" != "0" ]; then
+   echo "${RED}This script must be run as root!${NCC}"
+   exit 1
 fi
 
 BASEDIR=`dirname $0`
 PROJECT_PATH=`cd $BASEDIR; pwd`
 echo -e "${RED}Using path: ${PROJECT_PATH} ${NCC}"
+
+echo -e "${GRE}Creating user sysinfo ...${NCC}"
+useradd -m -c "User for web-sysinfo" $USERNAME
+passwd -d $USERNAME
+# TODO: Locate tcpdump!
+printf "\n# User for web-sysinfo [!]\n${USERNAME} ALL=NOPASSWD: /usr/sbin/tcpdump\n" >> /etc/sudoers
+if [ $? != "0" ]; then
+	echo -e "$(GRE)Please login as root:$(NCC)"
+	su -
+	sig=$?
+	printf "\n# User for web-sysinfo [!]\n${USERNAME} ALL=NOPASSWD: /usr/sbin/tcpdump\n" >> /etc/sudoers
+	if [ $sig == "0" ]; then
+		exit
+	fi
+fi
 
 apt install -y sysstat elinks apache2 libapache2-mod-php
 systemctl stop apache2

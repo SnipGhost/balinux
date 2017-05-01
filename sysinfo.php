@@ -9,6 +9,7 @@
 
 		<pre>
 <?php
+			echo system("uptime; iostat;");
 			echo system("top -b -n 1 | head -n 15");
 ?>
 		</pre>
