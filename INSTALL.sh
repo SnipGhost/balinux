@@ -1,6 +1,8 @@
 #!/bin/bash
 
 USERNAME="sysinfo"
+SCRIPTS_DIR="/home/${USERNAME}/scripts"
+INI_CONFIG="/var/www/html/sysinfo/scripts.ini"
 
 RED='\033[0;31m'
 GRE='\033[0;32m'
@@ -39,6 +41,12 @@ if [ $? != "0" ]; then
 	fi
 fi
 
+echo -e "${GRE}Starting to copy scripts to ${SCRIPTS_DIR} ...${NCC}"
+mkdir $SCRIPTS_DIR
+cp -f $PROJECT_PATH/loadavg.sh $SCRIPTS_DIR/loadavg.sh
+printf "loadavg=${SCRIPTS_DIR}/loadavg.sh\n" >> $INI_CONFIG
+# TODO: iostat, netstat, toptlk, netconnections, cpu, disks
+
 echo -e "${GRE}Adding crontab for ${USERNAME} ...${NCC}"
 crontab -l -u $USERNAME | cat - $PROJECT_PATH/automatic.cron | crontab -u $USERNAME -
 
@@ -69,8 +77,8 @@ echo -e "Static  page: ${GRE}http://127.0.0.1:80/index.html${NCC}"
 echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/index.php${NCC}"
 echo -e "PHPInfo page: ${GRE}http://127.0.0.1:80/phpinfo.php${NCC}"
 echo -e "\n404 test pages: "
-echo -e "Static  page: ${GRE}http://127.0.0.1:80/index.txt${NCC}"
-echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/index.cgi${NCC}"
+echo -e "Static  page: ${GRE}http://127.0.0.1:80/*****.txt${NCC}"
+echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/*****.cgi${NCC}"
 echo -e "\n${RED}Recommend to use ${GRE}elinks${RED} for color mapping${NCC}\n"
 
 exit 0

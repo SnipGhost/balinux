@@ -9,7 +9,8 @@
 
 		<pre>
 <?php
-			echo system("uptime; iostat;");
+			$ini = parse_ini_file("scripts.ini");
+			echo system($ini['loadavg']);
 			echo system("top -b -n 1 | head -n 15");
 ?>
 		</pre>
