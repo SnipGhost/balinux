@@ -1,3 +1,10 @@
 # crontab for web-sysinfo user
-  * *  *   *   *  echo "hello" | wall
+# m h dom mon dow command
+# * *  *   *   *  sudo /home/sysinfo/scripts/loadavg.sh
+# * *  *   *   *  sudo /home/sysinfo/scripts/iostat.sh
+  * *  *   *   *  sudo /home/sysinfo/scripts/netinf.sh
+  * *  *   *   *  sudo /home/sysinfo/scripts/toptlk.sh
+# * *  *   *   *  sudo /home/sysinfo/scripts/netcon.sh
+# * *  *   *   *  sudo /home/sysinfo/scripts/cpuinf.sh
+# * *  *   *   *  sudo /home/sysinfo/scripts/diskst.sh
 
