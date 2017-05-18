@@ -8,10 +8,16 @@ RED='\033[0;31m'
 GRE='\033[0;32m'
 NCC='\033[0m'
 #------------------------------------------------------------------------------------------------------------
+sig=0
+#------------------------------------------------------------------------------------------------------------
 # Check the script is being run by root
 if [ "$(id -u)" != "0" ]; then
-   echo "${RED}This script must be run as root!${NCC}"
-   exit 1
+	echo -e "${GRE}Please login as root to install sysinfo subsystem:${NCC}"
+	su -
+	if [ $? != "0" ]; then
+		echo -e "${RED}This script must be run as root!${NCC}"
+		exit 1
+	fi
 fi
 #------------------------------------------------------------------------------------------------------------
 BASEDIR=`dirname $0`
@@ -25,22 +31,12 @@ passwd -d $USERNAME
 # Locate TCPDUMP and TIMEOUT
 c1=$(whereis tcpdump | awk -F " " '{ print $2 }')
 c2=$(whereis timeout | awk -F " " '{ print $2 }')
-c3=${SCRIPTS_DIR}/netinf.sh
-c4=${SCRIPTS_DIR}/toptlk.sh
+cs=${SCRIPTS_DIR}/*
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Trying to add record to /etc/sudoers ...${NCC}"
-printf "\n# User for web-sysinfo [!]\n ${USERNAME} ALL=NOPASSWD: $c1, $c2, $c3, $c4\n" >> /etc/sudoers
+printf "\n# User for web-sysinfo [!]\n ${USERNAME} ALL=NOPASSWD: $c1, $c2, $cs\n" >> /etc/sudoers
 if [ $? != "0" ]; then
-	echo -e "${RED}Please login as root:${NCC}"
-	su -
-	sig=$?
-	printf "\n# User for web-sysinfo [!]\n ${USERNAME} ALL=NOPASSWD: $c1, $c2, $c3, $c4\n" >> /etc/sudoers
-	if [ $? != "0" ]; then
-		echo -e "${RED}Couldn't change file: /etc/sudoers${NCC}"
-	fi
-	if [ $sig == "0" ]; then
-		exit
-	fi
+	echo -e "${RED}Couldn't change file: /etc/sudoers${NCC}"
 fi
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Starting to copy scripts to ${SCRIPTS_DIR} ...${NCC}"
@@ -53,7 +49,7 @@ cp -f $PROJECT_PATH/loadavg.sh $SCRIPTS_DIR/loadavg.sh
 printf "loadavg=${SCRIPTS_DIR}/loadavg.sh\n" >> $INI_CONFIG
 # [2] IOSTAT
 cp -f $PROJECT_PATH/iostat.sh $SCRIPTS_DIR/iostat.sh
-printf "iostat=${SCRIPTS_DIR}/iostat.sh\n" >> $INI_CONFIG
+printf "iostat=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_iostat | head -n1\`\"\n" >> $INI_CONFIG
 # [3] NETINF
 cp -f $PROJECT_PATH/netinf.sh $SCRIPTS_DIR/netinf.sh
 printf "netinf=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_netinf | head -n1\`\"\n" >> $INI_CONFIG
@@ -61,15 +57,16 @@ printf "netinf=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_netinf | head -n1\`\"\n" >> $
 cp -f $PROJECT_PATH/toptlk.sh $SCRIPTS_DIR/toptlk.sh
 printf "toptlk=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_toptlk | head -n1\`\"\n" >> $INI_CONFIG
 # [5] NETCON
-#
-printf "netcon=\"echo -e \"In progress ...\\n\"\"\n" >> $INI_CONFIG
+cp -f $PROJECT_PATH/netcon.sh $SCRIPTS_DIR/netcon.sh
+printf "netcon=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_netcon | head -n1\`\"\n" >> $INI_CONFIG
 # [6] CPUINF
-#
-printf "cpuinf=\"echo -e \"In progress ...\\n\"\"\n" >> $INI_CONFIG
+cp -f $PROJECT_PATH/cpuinf.sh $SCRIPTS_DIR/cpuinf.sh
+printf "cpuinf=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_cpuinf | head -n1\`\"\n" >> $INI_CONFIG
 # [7] DISKST
 cp -f $PROJECT_PATH/diskst.sh $SCRIPTS_DIR/diskst.sh
-printf "diskst=${SCRIPTS_DIR}/diskst.sh\n" >> $INI_CONFIG
+printf "diskst=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_diskst | head -n1\`\"\n" >> $INI_CONFIG
 # [E]
+chown -R sysinfo:sysinfo $SCRIPTS_DIR/
 chmod +x $SCRIPTS_DIR/*
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Adding crontab for ${USERNAME} ...${NCC}"
@@ -95,6 +92,10 @@ systemctl restart nginx
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}END OF SCRIPT${NCC}\n"
 netstat -nlpt
+#------------------------------------------------------------------------------------------------------------
+if [ $sig == "0" ]; then
+	exit
+fi
 #------------------------------------------------------------------------------------------------------------
 echo -e "\nTest pages: "
 echo -e "Static  page: ${GRE}http://127.0.0.1:80/index.html${NCC}"
