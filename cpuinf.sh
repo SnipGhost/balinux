@@ -26,7 +26,7 @@ awk -v LIM1=20 -v LIM2=60                                             \
        { if (k[i] > LIM1)                                             \
          { if (k[i] > LIM2)                                           \
            k[i] = "<span style=\"color: red;\">"k[i]"</span>";        \
-         else k[i] = "<span style=\"color: orange;\">"k[i]"</span>" } \
+         else k[i] = "<span style=\"color: yellow;\">"k[i]"</span>" } \
        else k[i] = "<span style=\"color: green;\">"k[i]"</span>" } }  \
      print k[i]"</td>";                                               \
      }                                                                \

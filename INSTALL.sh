@@ -10,7 +10,6 @@ NCC='\033[0m'
 #------------------------------------------------------------------------------------------------------------
 BASEDIR=`dirname $0`
 PROJECT_PATH=`cd $BASEDIR; pwd`
-echo -e "${RED}Using path: ${PROJECT_PATH} ${NCC}"
 #------------------------------------------------------------------------------------------------------------
 # Check the script is being run by root
 if [ "$(id -u)" != "0" ]; then
@@ -18,6 +17,7 @@ if [ "$(id -u)" != "0" ]; then
 	sudo $PROJECT_PATH/INSTALL.sh; exit 0;
 fi
 #------------------------------------------------------------------------------------------------------------
+echo -e "${GRE}Using path: ${PROJECT_PATH} ${NCC}"
 echo -e "${GRE}Creating user sysinfo ...${NCC}"
 useradd -m -c "User for web-sysinfo" $USERNAME
 passwd -d $USERNAME
