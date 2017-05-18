@@ -8,21 +8,15 @@ RED='\033[0;31m'
 GRE='\033[0;32m'
 NCC='\033[0m'
 #------------------------------------------------------------------------------------------------------------
-sig=0
-#------------------------------------------------------------------------------------------------------------
-# Check the script is being run by root
-if [ "$(id -u)" != "0" ]; then
-	echo -e "${GRE}Please login as root to install sysinfo subsystem:${NCC}"
-	su -
-	if [ $? != "0" ]; then
-		echo -e "${RED}This script must be run as root!${NCC}"
-		exit 1
-	fi
-fi
-#------------------------------------------------------------------------------------------------------------
 BASEDIR=`dirname $0`
 PROJECT_PATH=`cd $BASEDIR; pwd`
 echo -e "${RED}Using path: ${PROJECT_PATH} ${NCC}"
+#------------------------------------------------------------------------------------------------------------
+# Check the script is being run by root
+if [ "$(id -u)" != "0" ]; then
+	echo -e "${RED}This script must be run as root!${NCC}"
+	sudo $PROJECT_PATH/INSTALL.sh; exit 0;
+fi
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Creating user sysinfo ...${NCC}"
 useradd -m -c "User for web-sysinfo" $USERNAME
@@ -92,10 +86,6 @@ systemctl restart nginx
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}END OF SCRIPT${NCC}\n"
 netstat -nlpt
-#------------------------------------------------------------------------------------------------------------
-if [ $sig == "0" ]; then
-	exit
-fi
 #------------------------------------------------------------------------------------------------------------
 echo -e "\nTest pages: "
 echo -e "Static  page: ${GRE}http://127.0.0.1:80/index.html${NCC}"
