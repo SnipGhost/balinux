@@ -6,19 +6,22 @@ if [ -z $1 ]
 then
 	BASEDIR=`dirname $0`
 	DIRPATH=`cd $BASEDIR; pwd`
-    f=$DIRPATH/data/`date +%Y.%m.%d_%H:%M:%S_iostat`
+	f=$DIRPATH/data/print_iostat
 else
     f="$1"
 fi
 #----------------------------------------------------------------------
 # Disk load (iostat)
 #----------------------------------------------------------------------
+tf=$f"_pre"
+iostat -xk 25 2 > $tf
+lines=`wc -l $tf | cut -d " " -f1`
+#----------------------------------------------------------------------
 printf "<table border=\"1\">\n" > $f
-iostat >> /dev/null
-iostat | tail -n +6 | head -n 4 | awk                                 \
-'{ split($0, k);                                                      \
-   print "<tr>";                                                      \
-   { for (i = 1; i <= 6; i++) print "<td>"k[i]"</td>"; }              \
+cat $tf | tail -n `expr $lines / 2` | tail -n +5 | head -n -1 | awk   \
+'{ split($0, k);
+   print "<tr>";
+   { for (i = 1; i <= 6; i++) print "<td>"k[i]"</td>"; }
    print "</tr>"; }' >> $f
 printf "\n</table>\n" >> $f
 #----------------------------------------------------------------------

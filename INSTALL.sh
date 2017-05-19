@@ -3,12 +3,12 @@
 USERNAME="sysinfo"
 SCRIPTS_DIR="/home/${USERNAME}/scripts"
 INI_CONFIG="${SCRIPTS_DIR}/scripts.ini"
-PATH_SYSINFO="/var/www/html/sysinfo/index.php"
 #------------------------------------------------------------------------------------------------------------
 RED='\033[0;31m'
 GRE='\033[0;32m'
 NCC='\033[0m'
 #------------------------------------------------------------------------------------------------------------
+# Find location of scrit
 BASEDIR=`dirname $0`
 PROJECT_PATH=`cd $BASEDIR; pwd`
 #------------------------------------------------------------------------------------------------------------
@@ -18,6 +18,7 @@ if [ "$(id -u)" != "0" ]; then
 	sudo $PROJECT_PATH/INSTALL.sh; exit 0;
 fi
 #------------------------------------------------------------------------------------------------------------
+# Add new special user for syinfo system
 echo -e "${GRE}Using path: ${PROJECT_PATH} ${NCC}"
 echo -e "${GRE}Creating user sysinfo ...${NCC}"
 useradd -m -c "User for web-sysinfo" $USERNAME
@@ -28,12 +29,14 @@ c1=$(whereis tcpdump | awk -F " " '{ print $2 }')
 c2=$(whereis timeout | awk -F " " '{ print $2 }')
 cs=${SCRIPTS_DIR}/*
 #------------------------------------------------------------------------------------------------------------
+# Added sudo rules to /etc/sudoers for sysinfo user
 echo -e "${GRE}Trying to add record to /etc/sudoers ...${NCC}"
 printf "\n# User for web-sysinfo [!]\n ${USERNAME} ALL=NOPASSWD: $c1, $c2, $cs\n" >> /etc/sudoers
 if [ $? != "0" ]; then
 	echo -e "${RED}Couldn't change file: /etc/sudoers${NCC}"
 fi
 #------------------------------------------------------------------------------------------------------------
+# Prepare directories for scripts and web-pages
 echo -e "${GRE}Starting to copy scripts to ${SCRIPTS_DIR} ...${NCC}"
 mkdir -p $SCRIPTS_DIR/data
 mkdir -p /var/www/html/sysinfo
@@ -44,7 +47,7 @@ cp -f $PROJECT_PATH/loadavg.sh $SCRIPTS_DIR/loadavg.sh
 printf "loadavg=${SCRIPTS_DIR}/loadavg.sh\n" >> $INI_CONFIG
 # [2] IOSTAT
 cp -f $PROJECT_PATH/iostat.sh $SCRIPTS_DIR/iostat.sh
-printf "iostat=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_iostat | head -n1\`\"\n" >> $INI_CONFIG
+printf "iostat=\"cat ${SCRIPTS_DIR}/data/print_iostat\"\n" >> $INI_CONFIG
 # [3] NETINF
 cp -f $PROJECT_PATH/netinf.sh $SCRIPTS_DIR/netinf.sh
 printf "netinf=\"cat ${SCRIPTS_DIR}/data/print_netinf\"\n" >> $INI_CONFIG
@@ -64,10 +67,12 @@ printf "diskst=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_diskst | head -n1\`\"\n" >> $
 chown -R sysinfo:sysinfo $SCRIPTS_DIR/
 chmod +x $SCRIPTS_DIR/*
 #------------------------------------------------------------------------------------------------------------
+# Added crontab to auto-start scripts for sysinfo user
 echo -e "${GRE}Adding crontab for ${USERNAME} ...${NCC}"
 crontab -l -u $USERNAME | cat - $PROJECT_PATH/automatic.cron | crontab -u $USERNAME -
 #------------------------------------------------------------------------------------------------------------
-sudo $SCRIPTS_DIR/netinf.sh curr_netinf
+# Setup scripts with special files
+sudo $SCRIPTS_DIR/netinf.sh $SCRIPTS_DIR/data/curr_netinf
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Installing tools, apache2+php and nginx ...${NCC}"
 apt install -y sysstat elinks apache2 libapache2-mod-php
@@ -81,13 +86,17 @@ cp -f $PROJECT_PATH/apache-default.conf /etc/apache2/sites-enabled/000-default.$
 cp -f $PROJECT_PATH/index.html /var/www/html/index.html
 cp -f $PROJECT_PATH/index.php /var/www/html/index.php
 cp -f $PROJECT_PATH/phpinfo.php /var/www/html/phpinfo.php
-cp -f $PROJECT_PATH/sysinfo.php $PATH_SYSINFO
+cp -f $PROJECT_PATH/sysinfo.php /var/www/html/sysinfo/index.php
 #------------------------------------------------------------------------------------------------------------
-sed -i "1 i <?php \$iniFile=\"${INI_CONFIG}\";?>" $PATH_SYSINFO
+sed -i "1 i <?php \$iniFile=\"${INI_CONFIG}\";?>" /var/www/html/sysinfo/index.php
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Restarting servers ... ${NCC}"
 systemctl start apache2
 systemctl restart nginx
+#------------------------------------------------------------------------------------------------------------
+# Restart scripts to collect inforamation from setup
+sudo $SCRIPTS_DIR/netinf.sh
+sudo $SCRIPTS_DIR/iostat.sh
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}END OF SCRIPT${NCC}\n"
 netstat -nlpt
@@ -98,8 +107,8 @@ echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/index.php${NCC}"
 echo -e "PHPInfo page: ${GRE}http://127.0.0.1:80/phpinfo.php${NCC}"
 echo -e "SysInfo page: ${GRE}http://127.0.0.1:80/sysinfo/${NCC}"
 echo -e "\n404 test pages: "
-echo -e "Static  page: ${GRE}http://127.0.0.1:80/*****.txt${NCC}"
-echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/*****.cgi${NCC}"
-echo -e "\n${RED}Recommend to use ${GRE}elinks${RED} for color mapping${NCC}\n"
+echo -e "Static  page: ${GRE}http://127.0.0.1:80/notfound.txt${NCC}"
+echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/notfound.cgi${NCC}"
+echo -e "\n${RED}Recommend to use ${GRE}elinks${RED} for better color mapping${NCC}\n"
 #------------------------------------------------------------------------------------------------------------
 exit 0

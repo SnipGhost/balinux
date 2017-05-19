@@ -5,7 +5,7 @@
 	</head>
 	<body style="background-color: black; color: white;">
 
-		<h1>Sysinfo</h1>
+		<h1>SysInfo</h1>
 
 		<br>
 
