@@ -2,10 +2,10 @@
 #----------------------------------------------------------------------
 # Test filename var
 #----------------------------------------------------------------------
+BASEDIR=`dirname $0`
+DIRPATH=`cd $BASEDIR; pwd`
 if [ -z $1 ] || [ -z $2 ]
 then
-	BASEDIR=`dirname $0`
-	DIRPATH=`cd $BASEDIR; pwd`
 	f1=$DIRPATH/data/print_iostat
 	f2=$DIRPATH/data/print_cpuinf
 	tf=$DIRPATH/data/iostat_output
@@ -13,7 +13,7 @@ then
 else
     f1="$1"
     f2="$2"
-    tf="/tmp/iostat_output"
+    tf=$DIRPATH/data/iostat_output
     iostat -xk 1 1 > $tf
     $tf | tail -n +2 >> $tf
 fi

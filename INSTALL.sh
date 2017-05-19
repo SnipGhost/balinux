@@ -73,8 +73,9 @@ crontab -l -u $USERNAME | cat - $PROJECT_PATH/automatic.cron | crontab -u $USERN
 #------------------------------------------------------------------------------------------------------------
 # Setup scripts with special files
 echo -e "${GRE}Prepare scripts ...${NCC}"
+sudo $SCRIPTS_DIR/iostat.sh $SCRIPTS_DIR/data/print_iostat $SCRIPTS_DIR/data/print_cpuinf
 sudo $SCRIPTS_DIR/netinf.sh $SCRIPTS_DIR/data/curr_netinf
-sudo $SCRIPTS_DIR/iostat.sh $SCRIPTS_DIR/data/iostat_output
+sudo $SCRIPTS_DIR/netcon.sh $SCRIPTS_DIR/data/print_netcon
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Installing tools, apache2+php and nginx ...${NCC}"
 apt install -y sysstat elinks apache2 libapache2-mod-php
