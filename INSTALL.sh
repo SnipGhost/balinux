@@ -72,9 +72,9 @@ echo -e "${GRE}Adding crontab for ${USERNAME} ...${NCC}"
 crontab -l -u $USERNAME | cat - $PROJECT_PATH/automatic.cron | crontab -u $USERNAME -
 #------------------------------------------------------------------------------------------------------------
 # Setup scripts with special files
-sudo $SCRIPTS_DIR/netinf.sh $SCRIPTS_DIR/data/curr_netinf &
-sudo $SCRIPTS_DIR/iostat.sh &
-sudo $SCRIPTS_DIR/cpuinf.sh &
+echo -e "${GRE}Prepare scripts ...${NCC}"
+sudo $SCRIPTS_DIR/netinf.sh $SCRIPTS_DIR/data/curr_netinf
+sudo $SCRIPTS_DIR/iostat.sh $SCRIPTS_DIR/data/iostat_output
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Installing tools, apache2+php and nginx ...${NCC}"
 apt install -y sysstat elinks apache2 libapache2-mod-php
@@ -97,7 +97,8 @@ systemctl start apache2
 systemctl restart nginx
 #------------------------------------------------------------------------------------------------------------
 # Restart scripts to collect inforamation from setup
-sudo $SCRIPTS_DIR/netinf.sh &
+echo -e "${GRE}Restarting scripts ... ${NCC}"
+sudo $SCRIPTS_DIR/netinf.sh
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}END OF SCRIPT${NCC}\n"
 netstat -nlpt

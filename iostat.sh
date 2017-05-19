@@ -9,13 +9,15 @@ then
 	f1=$DIRPATH/data/print_iostat
 	f2=$DIRPATH/data/print_cpuinf
 	tf=$DIRPATH/data/iostat_output
+	iostat -xk 25 2 > $tf
 else
     f1="$1"
     f2="$2"
     tf="/tmp/iostat_output"
+    iostat -xk 1 1 > $tf
+    $tf | tail -n +2 >> $tf
 fi
 #----------------------------------------------------------------------
-iostat -k 25 2 > $tf
 lines=`wc -l $tf | cut -d " " -f1`
 #----------------------------------------------------------------------
 # Disk load (iostat)
