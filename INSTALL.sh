@@ -3,6 +3,7 @@
 USERNAME="sysinfo"
 SCRIPTS_DIR="/home/${USERNAME}/scripts"
 INI_CONFIG="${SCRIPTS_DIR}/scripts.ini"
+PATH_SYSINFO="/var/www/html/sysinfo/index.php"
 #------------------------------------------------------------------------------------------------------------
 RED='\033[0;31m'
 GRE='\033[0;32m'
@@ -80,9 +81,9 @@ cp -f $PROJECT_PATH/apache-default.conf /etc/apache2/sites-enabled/000-default.$
 cp -f $PROJECT_PATH/index.html /var/www/html/index.html
 cp -f $PROJECT_PATH/index.php /var/www/html/index.php
 cp -f $PROJECT_PATH/phpinfo.php /var/www/html/phpinfo.php
-cp -f $PROJECT_PATH/sysinfo.php /var/www/html/sysinfo/index.php
+cp -f $PROJECT_PATH/sysinfo.php $PATH_SYSINFO
 #------------------------------------------------------------------------------------------------------------
-sed -e 14"s/^/\$ini = parse_ini_file(\"${INI_CONFIG}\");\n/" -i /var/www/html/sysinfo/index.php
+sed -i "1 i <?php \$iniFile=\"${INI_CONFIG}\";?>" $PATH_SYSINFO
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Restarting servers ... ${NCC}"
 systemctl start apache2
@@ -95,6 +96,7 @@ echo -e "\nTest pages: "
 echo -e "Static  page: ${GRE}http://127.0.0.1:80/index.html${NCC}"
 echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/index.php${NCC}"
 echo -e "PHPInfo page: ${GRE}http://127.0.0.1:80/phpinfo.php${NCC}"
+echo -e "SysInfo page: ${GRE}http://127.0.0.1:80/sysinfo/${NCC}"
 echo -e "\n404 test pages: "
 echo -e "Static  page: ${GRE}http://127.0.0.1:80/*****.txt${NCC}"
 echo -e "Dynamic page: ${GRE}http://127.0.0.1:80/*****.cgi${NCC}"

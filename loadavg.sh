@@ -9,16 +9,16 @@ p=$(cat /proc/cpuinfo | grep -i 'core id' | wc -l)
 echo "<table border=\"1\"><tr>"
 uptime | awk -F "," '{ print "<td>"$1","$2", load average: </td>" }';
 #----------------------------------------------------------------------
-cat /proc/loadavg | awk -v LIM1=0.5 -v LIM2=0.9 -v PROCC=$p -F " "          \
-' { n[3]; n[0] = $1; n[1] = $2; n[2] = $3;                                  \
-    { for (i = 0; i < 3; i++)                                               \
-      { { if (n[i]/PROCC > LIM1)                                            \
-        { if (n[i]/PROCC > LIM2) print "<td><span style=\"color: red;\">";  \
-          else print "<td><span style=\"color: yellow;\">"; }               \
-        else print "<td><span style=\"color: green;\">"; }                  \
-        print n[i]"</span></td>";                                           \
-      }                                                                     \
-    }                                                                       \
+cat /proc/loadavg | awk -v LIM1=0.5 -v LIM2=0.9 -v PROCC=$p -F " "    \
+' { n[3]; n[0] = $1; n[1] = $2; n[2] = $3;
+    { for (i = 0; i < 3; i++)
+      { { if (n[i]/PROCC > LIM1)
+        { if (n[i]/PROCC > LIM2) print "<td><span style=\"color: red;\">";
+          else print "<td><span style=\"color: yellow;\">"; }
+        else print "<td><span style=\"color: green;\">"; }
+        print n[i]"</span></td>";
+      }
+    }
   print nc"</span></td>";}'
 #----------------------------------------------------------------------
 echo "</tr></table>"
