@@ -36,15 +36,9 @@ cat $f1 | awk -v FILE=$f2 -v LIM1=10 -v LIM2=20                     \
          s[5]="<span style=\"color: red\">"s[5]"</span>";
        else s[5]="<span style=\"color: yellow\">"s[5]"</span>"; }
      else s[5]="<span style=\"color: green\">"s[5]"</span>"; } }
-   print "<tr><td>"k[1]"</td><td>"
-                   k[2]"</td><td>"
-                   k[3]"</td><td>"
-                   k[4]"</td><td>"
-                   k[5]"</td><td>"
-                   s[2]"</td><td>"
-                   s[3]"</td><td>"
-                   s[4]"</td><td>"
-                   s[5]"</td><td>"
+   print "<tr><td>"k[1]"</td><td>"k[2]"</td><td>"k[3]"</td><td>" \
+                   k[4]"</td><td>"k[5]"</td><td>"s[2]"</td><td>" \
+                   s[3]"</td><td>"s[4]"</td><td>"s[5]"</td><td>" \
                    s[6]"</td></tr>";
 }' >> $f
 printf "\n</table>\n" >> $f

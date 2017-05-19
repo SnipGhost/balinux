@@ -18,7 +18,7 @@ lines=`wc -l $tf | cut -d " " -f1`
 # CPU info (cpuinf)
 #----------------------------------------------------------------------
 printf "<table border=\"1\">" > $f
-cat $tf | tail -n `expr $lines / 2` | tail -n +3 | head -n 2 |        \
+cat $tf | tail -n `expr $lines / 2` | tail -n +2 | head -n 2 |        \
 sed -e 's/avg-cpu: //g' | awk -v LIM1=20 -v LIM2=60                   \
 '{ split($0, k);
    print "<tr>";
