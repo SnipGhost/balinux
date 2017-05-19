@@ -5,6 +5,6 @@
   * *  *   *   *  sudo /home/sysinfo/scripts/netinf.sh; (sleep 30; sudo /home/sysinfo/scripts/netinf.sh;)
   * *  *   *   *  sudo /home/sysinfo/scripts/toptlk.sh; (sleep 30; sudo /home/sysinfo/scripts/toptlk.sh;)
   * *  *   *   *  sudo /home/sysinfo/scripts/netcon.sh; (sleep 30; sudo /home/sysinfo/scripts/netcon.sh;)
-  * *  *   *   *  sudo /home/sysinfo/scripts/cpuinf.sh; (sleep 30; sudo /home/sysinfo/scripts/cpuinf.sh;)
+# * *  *   *   *  sudo /home/sysinfo/scripts/cpuinf.sh; (sleep 30; sudo /home/sysinfo/scripts/cpuinf.sh;)
   * *  *   *   *  sudo /home/sysinfo/scripts/diskst.sh; (sleep 30; sudo /home/sysinfo/scripts/diskst.sh;)
 

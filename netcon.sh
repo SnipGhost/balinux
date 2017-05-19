@@ -19,3 +19,8 @@ ss -tua | grep -v -E '(u_str)' | sed -e 's/Local /Local_/g' | sed 's/Peer /Peer_
    print "</tr>"; }' >> $f
 printf "\n</table>\n" >> $f
 #--------------------------------------------------------------------------------------------------
+printf "<table border=\"1\">\n" >> $f
+ss -ta | cut -d " " -f1 | tail -n +2 | sort | uniq -c | sort -r | awk -F " " \
+'{ print "<tr><td>"$1"</td><td>"$2"</td></tr>" }' >> $f
+printf "\n</table>\n" >> $f
+#--------------------------------------------------------------------------------------------------
