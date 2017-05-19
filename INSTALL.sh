@@ -56,10 +56,10 @@ cp -f $PROJECT_PATH/toptlk.sh $SCRIPTS_DIR/toptlk.sh
 printf "toptlk=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_toptlk | head -n1\`\"\n" >> $INI_CONFIG
 # [5] NETCON
 cp -f $PROJECT_PATH/netcon.sh $SCRIPTS_DIR/netcon.sh
-printf "netcon=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_netcon | head -n1\`\"\n" >> $INI_CONFIG
+printf "netcon=\"cat ${SCRIPTS_DIR}/data/print_netcon\"\n" >> $INI_CONFIG
 # [6] CPUINF
 cp -f $PROJECT_PATH/cpuinf.sh $SCRIPTS_DIR/cpuinf.sh
-printf "cpuinf=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_cpuinf | head -n1\`\"\n" >> $INI_CONFIG
+printf "cpuinf=\"cat ${SCRIPTS_DIR}/data/print_cpuinf\"\n" >> $INI_CONFIG
 # [7] DISKST
 cp -f $PROJECT_PATH/diskst.sh $SCRIPTS_DIR/diskst.sh
 printf "diskst=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_diskst | head -n1\`\"\n" >> $INI_CONFIG

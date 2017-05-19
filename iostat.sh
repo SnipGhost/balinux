@@ -21,7 +21,7 @@ printf "<table border=\"1\">\n" > $f
 cat $tf | tail -n `expr $lines / 2` | tail -n +5 | head -n -1 | awk   \
 '{ split($0, k);
    print "<tr>";
-   { for (i = 1; i <= 6; i++) print "<td>"k[i]"</td>"; }
+   { for (i = 1; i <= 14; i++) print "<td>"k[i]"</td>"; }
    print "</tr>"; }' >> $f
 printf "\n</table>\n" >> $f
 #----------------------------------------------------------------------
