@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------------------------------------
 USERNAME="sysinfo"
 SCRIPTS_DIR="/home/${USERNAME}/scripts"
-INI_CONFIG="/var/www/html/sysinfo/scripts.ini"
+INI_CONFIG="${SCRIPTS_DIR}/scripts.ini"
 #------------------------------------------------------------------------------------------------------------
 RED='\033[0;31m'
 GRE='\033[0;32m'
@@ -46,7 +46,7 @@ cp -f $PROJECT_PATH/iostat.sh $SCRIPTS_DIR/iostat.sh
 printf "iostat=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_iostat | head -n1\`\"\n" >> $INI_CONFIG
 # [3] NETINF
 cp -f $PROJECT_PATH/netinf.sh $SCRIPTS_DIR/netinf.sh
-printf "netinf=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_netinf | head -n1\`\"\n" >> $INI_CONFIG
+printf "netinf=\"cat ${SCRIPTS_DIR}/data/print_netinf\"\n" >> $INI_CONFIG
 # [4] TOPTLK
 cp -f $PROJECT_PATH/toptlk.sh $SCRIPTS_DIR/toptlk.sh
 printf "toptlk=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_toptlk | head -n1\`\"\n" >> $INI_CONFIG
@@ -66,6 +66,8 @@ chmod +x $SCRIPTS_DIR/*
 echo -e "${GRE}Adding crontab for ${USERNAME} ...${NCC}"
 crontab -l -u $USERNAME | cat - $PROJECT_PATH/automatic.cron | crontab -u $USERNAME -
 #------------------------------------------------------------------------------------------------------------
+sudo $SCRIPTS_DIR/netinf.sh curr_netinf
+#------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Installing tools, apache2+php and nginx ...${NCC}"
 apt install -y sysstat elinks apache2 libapache2-mod-php
 systemctl stop apache2
@@ -79,6 +81,8 @@ cp -f $PROJECT_PATH/index.html /var/www/html/index.html
 cp -f $PROJECT_PATH/index.php /var/www/html/index.php
 cp -f $PROJECT_PATH/phpinfo.php /var/www/html/phpinfo.php
 cp -f $PROJECT_PATH/sysinfo.php /var/www/html/sysinfo/index.php
+#------------------------------------------------------------------------------------------------------------
+sed -e 14"s/^/\$ini = parse_ini_file(\"${INI_CONFIG}\");\n/" -i /var/www/html/sysinfo/index.php
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Restarting servers ... ${NCC}"
 systemctl start apache2
