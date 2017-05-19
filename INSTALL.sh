@@ -53,7 +53,7 @@ cp -f $PROJECT_PATH/netinf.sh $SCRIPTS_DIR/netinf.sh
 printf "netinf=\"cat ${SCRIPTS_DIR}/data/print_netinf\"\n" >> $INI_CONFIG
 # [4] TOPTLK
 cp -f $PROJECT_PATH/toptlk.sh $SCRIPTS_DIR/toptlk.sh
-printf "toptlk=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_toptlk | head -n1\`\"\n" >> $INI_CONFIG
+printf "toptlk=\"cat ${SCRIPTS_DIR}/data/print_toptlk\"\n" >> $INI_CONFIG
 # [5] NETCON
 cp -f $PROJECT_PATH/netcon.sh $SCRIPTS_DIR/netcon.sh
 printf "netcon=\"cat ${SCRIPTS_DIR}/data/print_netcon\"\n" >> $INI_CONFIG
@@ -62,7 +62,7 @@ cp -f $PROJECT_PATH/cpuinf.sh $SCRIPTS_DIR/cpuinf.sh
 printf "cpuinf=\"cat ${SCRIPTS_DIR}/data/print_cpuinf\"\n" >> $INI_CONFIG
 # [7] DISKST
 cp -f $PROJECT_PATH/diskst.sh $SCRIPTS_DIR/diskst.sh
-printf "diskst=\"cat \`ls -t ${SCRIPTS_DIR}/data/*_diskst | head -n1\`\"\n" >> $INI_CONFIG
+printf "diskst=\"cat ${SCRIPTS_DIR}/data/print_diskst\"\n" >> $INI_CONFIG
 # [E]
 chown -R sysinfo:sysinfo $SCRIPTS_DIR/
 chmod +x $SCRIPTS_DIR/*
@@ -73,9 +73,7 @@ crontab -l -u $USERNAME | cat - $PROJECT_PATH/automatic.cron | crontab -u $USERN
 #------------------------------------------------------------------------------------------------------------
 # Setup scripts with special files
 echo -e "${GRE}Prepare scripts ...${NCC}"
-sudo $SCRIPTS_DIR/iostat.sh $SCRIPTS_DIR/data/print_iostat $SCRIPTS_DIR/data/print_cpuinf
 sudo $SCRIPTS_DIR/netinf.sh $SCRIPTS_DIR/data/curr_netinf
-sudo $SCRIPTS_DIR/netcon.sh $SCRIPTS_DIR/data/print_netcon
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Installing tools, apache2+php and nginx ...${NCC}"
 apt install -y sysstat elinks apache2 libapache2-mod-php
@@ -99,7 +97,11 @@ systemctl restart nginx
 #------------------------------------------------------------------------------------------------------------
 # Restart scripts to collect inforamation from setup
 echo -e "${GRE}Restarting scripts ... ${NCC}"
+sudo $SCRIPTS_DIR/iostat.sh $SCRIPTS_DIR/data/print_iostat $SCRIPTS_DIR/data/print_cpuinf
 sudo $SCRIPTS_DIR/netinf.sh
+sudo $SCRIPTS_DIR/toptlk.sh $SCRIPTS_DIR/data/print_toptlk &
+sudo $SCRIPTS_DIR/netcon.sh
+sudo $SCRIPTS_DIR/diskst.sh
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}END OF SCRIPT${NCC}\n"
 netstat -nlpt

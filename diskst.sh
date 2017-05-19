@@ -6,7 +6,7 @@ if [ -z $1 ]
 then
     BASEDIR=`dirname $0`
     DIRPATH=`cd $BASEDIR; pwd`
-    f=$DIRPATH/data/`date +%Y.%m.%d_%H:%M:%S_diskst`
+    f=$DIRPATH/data/print_diskst
 else
     f="$1"
 fi
