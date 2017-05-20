@@ -4,7 +4,7 @@
 #------------------------------------------------------------------------------
 if [ -z $2 ]
 then
-    t="28"
+    t="29"
 else
     t="$2"
 fi
@@ -33,14 +33,17 @@ fi
 #------------------------------------------------------------------------------
 # Print top talkers
 #------------------------------------------------------------------------------
-printf "<table border=\"1\">\n" > $f
-sudo timeout $t tcpdump -tnn -c $p | awk -F "." \
-'{print $1"."$2"."$3"."$4}' | sort | uniq -c | sort -nr | awk '$1 > 1' | awk -F " " \
-'{ print "<tr><td>"NR"</td><td>"$1"</td><td>"$2 $3"</td></tr>" }' >> $f
-lines=`cat $f | wc -l`
-if [ $lines < 2 ]
+buffer=$(printf "<table border=\"1\">\n";
+sudo timeout $t tcpdump -tnn | awk -F "." '{print $1"."$2"."$3"."$4}' |       \
+sort | uniq -c | sort -nr | awk '$1 > 1' |                                    \
+awk -F " " '{ print "<tr><td>"NR"</td><td>"$1"</td><td>"$2" "$3"</td></tr>" }';
+printf "\n</table>\n")
+#------------------------------------------------------------------------------
+chars=`echo $buffer | wc -c`
+if (( $lines < 32 ))
 then
-	printf "<tr><td>NOTHING</td></tr>" >> $f
+	printf "<table border=\"1\"><tr><td>NOTHING</td></tr></table>\n" > $f
+else
+	printf "$buffer\n" > $f
 fi
-printf "\n</table>\n" >> $f
 #------------------------------------------------------------------------------

@@ -12,13 +12,13 @@
 		<pre>
 		<?php
 			$ini = parse_ini_file($iniFile);
-			echo system($ini['loadavg']);
-			echo system($ini['iostat']);
-			echo system($ini['netinf']);
-			echo system($ini['toptlk']);
-			echo system($ini['netcon']);
-			echo system($ini['cpuinf']);
-			echo system($ini['diskst']);
+			echo passthru($ini['loadavg']);
+			echo passthru($ini['iostat']);
+			echo passthru($ini['netinf']);
+			echo passthru($ini['toptlk']);
+			echo passthru($ini['netcon']);
+			echo passthru($ini['cpuinf']);
+			echo passthru($ini['diskst']);
 		?>
 		</pre>
 
