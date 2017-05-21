@@ -5,19 +5,17 @@
 	</head>
 	<body style="background-color: black; color: white; font-family: monospace;">
 
-		<h1>Collected system information by <?php echo date('H:i:s d.m.Y')?> UTC</h1>
+		<center><h1>Collected system information by <?php echo date('H:i:s d.m.Y')?></h1></center>
 
 		<?php
 			$hdr = getallheaders();
-
+			$proxys = $hdr['X-NGX-VERSION'];
+			$server = $_SERVER['SERVER_ADDR'].":".$hdr['X-Apache-Port']." (".explode(' ', $_SERVER['SERVER_SOFTWARE'])[0].")";
 			if (!isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 				$client = $_SERVER['REMOTE_ADDR'].":".$_SERVER['REMOTE_PORT']; 
 			} else {
 				$client = $_SERVER['HTTP_X_FORWARDED_FOR'].":".$_SERVER['REMOTE_PORT']; 
 			}
-			$server = $_SERVER['SERVER_ADDR'].":".$_SERVER['SERVER_PORT']." (".$_SERVER['SERVER_SOFTWARE'].")";
-			$proxys = $hdr['X-NGX-VERSION'];
-
 			echo "<div align=\"right\">";
 			echo "<table style=\"color: purple; font-weight: bold; margin-left: auto; margin-right: 20px;\">";
 			echo "<tr><td> nginx:</td><td>".$proxys."</td></tr>";
