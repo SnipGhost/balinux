@@ -7,6 +7,25 @@
 
 		<h1>Collected system information by <?php echo date('H:i:s d.m.Y')?> UTC</h1>
 
+		<?php
+			$hdr = getallheaders();
+
+			if (!isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				$client = $_SERVER['REMOTE_ADDR'].":".$_SERVER['REMOTE_PORT']; 
+			} else {
+				$client = $_SERVER['HTTP_X_FORWARDED_FOR'].":".$_SERVER['REMOTE_PORT']; 
+			}
+			$server = $_SERVER['SERVER_ADDR'].":".$_SERVER['SERVER_PORT']." (".$_SERVER['SERVER_SOFTWARE'].")";
+			$proxys = $hdr['X-NGX-VERSION'];
+
+			echo "<div align=\"right\">";
+			echo "<table style=\"color: purple; font-weight: bold; margin-left: auto; margin-right: 20px;\">";
+			echo "<tr><td> nginx:</td><td>".$proxys."</td></tr>";
+			echo "<tr><td>apache:</td><td>".$server."</td></tr>";
+			echo "<tr><td>client:</td><td>".$client."</td></tr>";
+			echo "</table></div>";
+		?>
+
 		<br>
 
 		<?php
