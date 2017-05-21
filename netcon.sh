@@ -17,7 +17,7 @@ ss -tua | grep -v -E '(u_str)' | sed -e 's/Local /Local_/g' | sed 's/Peer /Peer_
    print "<tr>";
    { for (i = 1; i <= 6; i++) print "<td>"k[i]"</td>"; }
    print "</tr>"; }';
-printf "\n</table>\n";)
+printf "\n</table>\n<br>";)
 #--------------------------------------------------------------------------------------------------
 buffer2=$(printf "<table border=\"1\">\n";
 ss -ta | cut -d " " -f1 | tail -n +2 | sort | uniq -c | sort -r | awk -F " " \

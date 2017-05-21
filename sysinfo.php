@@ -13,7 +13,7 @@
 			$ini = parse_ini_file($iniFile);
 			echo "<br><span> Load Average </span><br>";
 			echo passthru($ini['loadavg'])."<br>";
-			echo "<br><span> Disks statistics in ".$updateTime." sec </span><br>";
+			echo "<br><span> Disks statistics </span><br>";
 			echo passthru($ini['iostat'])."<br>";
 			echo "<br><span> Network load in ".$updateTime." sec </span><br>";
 			echo passthru($ini['netinf'])."<br>";

@@ -14,6 +14,7 @@ else
     f1="$1"
     f2="$2"
     tf=$DIRPATH/data/iostat_output
+    fstep="true"
     iostat -k 1 1 > $tf
     cat $tf | tail -n +3 >> $tf
 fi
@@ -23,10 +24,18 @@ lines=`wc -l $tf | cut -d " " -f1`
 # Disk load (iostat)
 #----------------------------------------------------------------------
 buffer1=$(printf "<table border=\"1\">\n";
+if [ -z $fstep ]; 
+then 
+	printf "<tr><td colspan=\"6\" style=\"text-align: center;\">
+			[!] From start [!]</td></tr>"; 
+else
+	printf "<tr><td colspan=\"6\" style=\"text-align: center;\">
+			[!] In 30 sec [!]</td></tr>"; 
+fi;
 cat $tf | tail -n `expr $lines / 2` | tail -n +5 | head -n -1 | awk   \
 '{ split($0, k);
    print "<tr>";
-   { for (i = 1; i <= 14; i++) print "<td>"k[i]"</td>"; }
+   { for (i = 1; i <= 6; i++) print "<td>"k[i]"</td>"; }
    print "</tr>"; }';
 printf "\n</table>\n";)
 echo "$buffer1" > $f1
