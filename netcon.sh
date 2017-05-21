@@ -11,16 +11,18 @@ else
     f="$1"
 fi
 #--------------------------------------------------------------------------------------------------
-printf "<table border=\"1\">\n" > $f
+buffer1=$(printf "<table border=\"1\">\n";
 ss -tua | grep -v -E '(u_str)' | sed -e 's/Local /Local_/g' | sed 's/Peer /Peer_/g' | awk         \
 '{ split($0, k);
    print "<tr>";
    { for (i = 1; i <= 6; i++) print "<td>"k[i]"</td>"; }
-   print "</tr>"; }' >> $f
-printf "\n</table>\n" >> $f
+   print "</tr>"; }';
+printf "\n</table>\n")
 #--------------------------------------------------------------------------------------------------
-printf "<table border=\"1\">\n" >> $f
+buffer2=$(printf "<table border=\"1\">\n";
 ss -ta | cut -d " " -f1 | tail -n +2 | sort | uniq -c | sort -r | awk -F " " \
-'{ print "<tr><td>"$1"</td><td>"$2"</td></tr>" }' >> $f
-printf "\n</table>\n" >> $f
+'{ print "<tr><td>"$1"</td><td>"$2"</td></tr>" }';
+printf "\n</table>\n")
+#--------------------------------------------------------------------------------------------------
+printf "$buffer1 $buffer2" > $f
 #--------------------------------------------------------------------------------------------------

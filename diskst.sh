@@ -19,7 +19,7 @@ df -ai | grep -v -E '( /run| /dev| /sys| /proc| /var)' > $f2
 #--------------------------------------------------------------------
 # Disks info, free space, free inodes
 #--------------------------------------------------------------------
-printf "<table border=\"1\">\n" > $f
+$(printf "<table border=\"1\">\n";
 cat $f1 | awk -v FILE=$f2 -v LIM1=10 -v LIM2=20                     \
 '{ getline line < FILE;
    split(line, s);
@@ -40,6 +40,6 @@ cat $f1 | awk -v FILE=$f2 -v LIM1=10 -v LIM2=20                     \
                    k[4]"</td><td>"k[5]"</td><td>"s[2]"</td><td>" \
                    s[3]"</td><td>"s[4]"</td><td>"s[5]"</td><td>" \
                    s[6]"</td></tr>";
-}' >> $f
-printf "\n</table>\n" >> $f
+}';
+printf "\n</table>\n") > $f
 #--------------------------------------------------------------------

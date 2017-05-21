@@ -3,13 +3,12 @@
 		<title>SysInfo</title>
 		<meta HTTP-EQUIV="REFRESH" CONTENT="30">
 	</head>
-	<body style="background-color: black; color: white;">
+	<body style="background-color: black; color: white; font-family: monospace;">
 
-		<h1>SysInfo</h1>
+		<h1>Collected system information by <?php echo $_SERVER['REQUEST_TIME'];?> UTC</h1>
 
 		<br>
 
-		<pre>
 		<?php
 			$ini = parse_ini_file($iniFile);
 			echo passthru($ini['loadavg']);
@@ -20,7 +19,6 @@
 			echo passthru($ini['cpuinf']);
 			echo passthru($ini['diskst']);
 		?>
-		</pre>
-
+		
 	</body>
 </html>

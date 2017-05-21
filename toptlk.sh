@@ -33,14 +33,16 @@ fi
 #------------------------------------------------------------------------------
 # Print top talkers
 #------------------------------------------------------------------------------
-buffer=$(printf "<table border=\"1\">\n";
-sudo timeout $t tcpdump -tnn | awk -F "." '{print $1"."$2"."$3"."$4}' |       \
+buffer=$(printf "<table border=\"1\">\n
+<tr><td>#</td><td>count</td><td><center>IP_SRC -&gt; IP_DST</center></td></tr>";
+sudo timeout $t tcpdump -tnn | awk -F "[. ]"                                  \
+'{print $2"."$3"."$4"."$5" -&gt; "$8"."$9"."$10"."$11}' |                     \
 sort | uniq -c | sort -nr | awk '$1 > 1' |                                    \
 awk -F " " '{ print "<tr><td>"NR"</td><td>"$1"</td><td>"$2" "$3"</td></tr>" }';
 printf "\n</table>\n")
 #------------------------------------------------------------------------------
 chars=`echo $buffer | wc -c`
-if (( $lines < 32 ))
+if (( $chars < 120 ))
 then
 	printf "<table border=\"1\"><tr><td>NOTHING</td></tr></table>\n" > $f
 else
