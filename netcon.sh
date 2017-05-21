@@ -19,7 +19,7 @@ ss -tua | grep -v -E '(u_str)' | sed -e 's/Local /Local_/g' | sed 's/Peer /Peer_
    print "</tr>"; }';
 printf "\n</table>\n<br>";)
 #--------------------------------------------------------------------------------------------------
-buffer2=$(printf "<table border=\"1\">\n";
+buffer2=$(printf "<table border=\"1\">\n<tr><td colspan=\"2\">Total &sum;</td></tr>";
 ss -ta | cut -d " " -f1 | tail -n +2 | sort | uniq -c | sort -r | awk -F " " \
 '{ print "<tr><td>"$1"</td><td>"$2"</td></tr>" }';
 printf "\n</table>\n";)

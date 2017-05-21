@@ -27,10 +27,10 @@ buffer1=$(printf "<table border=\"1\">\n";
 if [ -z $fstep ]; 
 then 
 	printf "<tr><td colspan=\"6\" style=\"text-align: center;\">
-			[!] From start [!]</td></tr>"; 
+			[!] In 30 sec [!]</td></tr>";
 else
 	printf "<tr><td colspan=\"6\" style=\"text-align: center;\">
-			[!] In 30 sec [!]</td></tr>"; 
+			[!] From start [!]</td></tr>";
 fi;
 cat $tf | tail -n `expr $lines / 2` | tail -n +5 | head -n -1 | awk   \
 '{ split($0, k);
