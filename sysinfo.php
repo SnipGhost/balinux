@@ -5,7 +5,7 @@
 	</head>
 	<body style="background-color: black; color: white; font-family: monospace;">
 
-		<h1>Collected system information by <?php echo $_SERVER['REQUEST_TIME'];?> UTC</h1>
+		<h1>Collected system information by <?php echo date('H:i:s j.n.Y')?> UTC</h1>
 
 		<br>
 

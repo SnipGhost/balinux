@@ -4,7 +4,7 @@
 #------------------------------------------------------------------------------
 if [ -z $2 ]
 then
-    t="29"
+    t="30"
 else
     t="$2"
 fi
@@ -38,14 +38,14 @@ buffer=$(printf "<table border=\"1\">\n
 sudo timeout $t tcpdump -tnn | awk -F "[. ]"                                  \
 '{print $2"."$3"."$4"."$5" -&gt; "$8"."$9"."$10"."$11}' |                     \
 sort | uniq -c | sort -nr | awk '$1 > 1' |                                    \
-awk -F " " '{ print "<tr><td>"NR"</td><td>"$1"</td><td>"$2" "$3"</td></tr>" }';
-printf "\n</table>\n")
+awk -F " " '{ print "<tr><td>"NR"</td><td>"$1"</td><td>"$2" -&gt; "$4"</td></tr>" }';
+printf "\n</table>\n";)
 #------------------------------------------------------------------------------
 chars=`echo $buffer | wc -c`
 if (( $chars < 120 ))
 then
 	printf "<table border=\"1\"><tr><td>NOTHING</td></tr></table>\n" > $f
 else
-	printf "$buffer\n" > $f
+	echo "$buffer" > $f
 fi
 #------------------------------------------------------------------------------

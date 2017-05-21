@@ -24,7 +24,7 @@ fi
  sudo cat /proc/net/dev | tail -n +2 | sed -e 's/face/\_/g' | sed -e 's/|/ /g')              \
  | column -t | sed -e 's/_/ /g' > $c
 #--------------------------------------------------------------------------------------------------
-$(printf "<table border=\"1\">\n";
+buffer=$(printf "<table border=\"1\">\n";
 cat $c | awk -v FILE=$l \
 '{ split($0, k)
    getline line < FILE;
@@ -42,5 +42,6 @@ cat $c | awk -v FILE=$l \
    }
    print "</tr>";
  }';
-printf "\n</table>\n") > $f
+printf "\n</table>\n";)
+echo "$buffer" > $f
 #--------------------------------------------------------------------------------------------------

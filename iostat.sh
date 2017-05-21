@@ -22,17 +22,18 @@ lines=`wc -l $tf | cut -d " " -f1`
 #----------------------------------------------------------------------
 # Disk load (iostat)
 #----------------------------------------------------------------------
-$(printf "<table border=\"1\">\n";
+buffer1=$(printf "<table border=\"1\">\n";
 cat $tf | tail -n `expr $lines / 2` | tail -n +5 | head -n -1 | awk   \
 '{ split($0, k);
    print "<tr>";
    { for (i = 1; i <= 14; i++) print "<td>"k[i]"</td>"; }
    print "</tr>"; }';
-printf "\n</table>\n") > $f1
+printf "\n</table>\n";)
+echo "$buffer1" > $f1
 #----------------------------------------------------------------------
 # CPU info (cpuinf)
 #----------------------------------------------------------------------
-$(printf "<table border=\"1\">";
+buffer2=$(printf "<table border=\"1\">\n";
 cat $tf | tail -n `expr $lines / 2` | tail -n +2 | head -n 2 |        \
 sed -e 's/avg-cpu: //g' | awk -v LIM1=20 -v LIM2=60                   \
 '{ split($0, k);
@@ -52,5 +53,6 @@ sed -e 's/avg-cpu: //g' | awk -v LIM1=20 -v LIM2=60                   \
      print k[i]"</td>";
    } } } }
    print "</tr>"; }';
-printf "</table>\n") > $f2
+printf "\n</table>\n";) 
+echo "$buffer2" > $f2
 #----------------------------------------------------------------------
