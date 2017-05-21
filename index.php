@@ -15,11 +15,11 @@
 		</h3>
 		<br>
 		<pre>
-<?php
-			foreach (getallheaders() as $name => $value) {
-				echo "$name: $value\n";
-			}
-?>
+			<?php
+				foreach (getallheaders() as $name => $value) {
+					echo "$name: $value\n";
+				}
+			?>
 		</pre>
 	</body>
 </html>

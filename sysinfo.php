@@ -10,17 +10,16 @@
 		<?php
 			$hdr = getallheaders();
 			$proxys = $hdr['X-NGX-VERSION'];
-			$server = $_SERVER['SERVER_ADDR'].":".$hdr['X-Apache-Port']." (".explode(' ', $_SERVER['SERVER_SOFTWARE'])[0].")";
-			if (!isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-				$client = $_SERVER['REMOTE_ADDR'].":".$_SERVER['REMOTE_PORT']; 
-			} else {
-				$client = $_SERVER['HTTP_X_FORWARDED_FOR'].":".$_SERVER['REMOTE_PORT']; 
-			}
+			$hostnm = explode(' ', $_SERVER['SERVER_SOFTWARE']);
+			$server = $_SERVER['SERVER_ADDR'].":".$hdr['X-Apache-Port']." (".$hostnm[0].")";
+			$client = $hdr['X-Real-IP'].":".$hdr['X-Real-Port'];
+			$redirc = $_SERVER['REMOTE_ADDR'].":".$_SERVER['REMOTE_PORT'];
 			echo "<div align=\"right\">";
-			echo "<table style=\"color: purple; font-weight: bold; margin-left: auto; margin-right: 20px;\">";
+			echo "<table style=\"color: aqua; font-weight: bold; margin-right: 20px;\">";
 			echo "<tr><td> nginx:</td><td>".$proxys."</td></tr>";
 			echo "<tr><td>apache:</td><td>".$server."</td></tr>";
-			echo "<tr><td>client:</td><td>".$client."</td></tr>";
+			echo "<tr><td>client (nginx side):</td><td>".$client."</td></tr>";
+			echo "<tr><td>client (apache side):</td><td>".$redirc."</td></tr>";
 			echo "</table></div>";
 		?>
 
