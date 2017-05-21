@@ -21,5 +21,9 @@
 				}
 			?>
 		</pre>
+
+		<br><br>
+		<div align="right"><span style="color: lime; margin-right: 20px;">Created by Mikhail Kucherenko, 2017</span></div>
+
 	</body>
 </html>

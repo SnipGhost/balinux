@@ -4,6 +4,8 @@ USERNAME="sysinfo"
 SCRIPTS_DIR="/home/${USERNAME}/scripts"
 INI_CONFIG="${SCRIPTS_DIR}/scripts.ini"
 UPD_TIME=30
+HTML_BACKUP="/var/www/html-backup/"
+CONF_BACKUP="/var/www/conf-backup/"
 #------------------------------------------------------------------------------------------------------------
 RED='\033[0;31m'
 GRE='\033[0;32m'
@@ -39,6 +41,25 @@ fi
 #------------------------------------------------------------------------------------------------------------
 # Prepare directories for scripts and web-pages
 echo -e "${GRE}Starting to copy scripts to ${SCRIPTS_DIR} ...${NCC}"
+mkdir -p $HTML_BACKUP
+mv /var/www/html/* $HTML_BACKUP
+if [ $? != 1 ]; then echo -e "${RED}Move all files in /var/www/html to /var/www/html-backup${NCC}"; fi
+mkdir -p $CONF_BACKUP
+cp /etc/nginx/sites-enabled/default $CONF_BACKUP/default.backup
+if [ $? != 1 ]
+then
+	echo -e "${RED}Save /etc/nginx/sites-enabled/default as $CONF_BACKUP/default.backup${NCC}"
+fi
+cp /etc/apache2/ports.conf $CONF_BACKUP/ports.conf.backup
+if [ $? != 1 ]
+then
+	echo -e "${RED}Save /etc/nginx/sites-enabled/default as $CONF_BACKUP/default.backup${NCC}"
+fi
+cp /etc/apache2/sites-enabled/000-default.conf $CONF_BACKUP/000-default.conf.backup
+if [ $? != 1 ]
+then
+	echo -e "${RED}Save /etc/nginx/sites-enabled/default as $CONF_BACKUP/000-default.conf.backup${NCC}"
+fi
 mkdir -p $SCRIPTS_DIR/data
 mkdir -p /var/www/html/sysinfo
 touch $INI_CONFIG
@@ -84,7 +105,9 @@ apt install -y nginx
 echo -e "${GRE}Starting to copy configuration files${NCC}"
 cp -f $PROJECT_PATH/nginx-default.conf /etc/nginx/sites-enabled/default
 cp -f $PROJECT_PATH/apache-ports.conf /etc/apache2/ports.conf
-cp -f $PROJECT_PATH/apache-default.conf /etc/apache2/sites-enabled/000-default.$
+cp -f $PROJECT_PATH/apache-default.conf /etc/apache2/sites-enabled/000-default.conf
+#------------------------------------------------------------------------------------------------------------
+echo -e "${GRE}Starting to copy web-pages${NCC}"
 cp -f $PROJECT_PATH/index.html /var/www/html/index.html
 cp -f $PROJECT_PATH/index.php /var/www/html/index.php
 cp -f $PROJECT_PATH/phpinfo.php /var/www/html/phpinfo.php
