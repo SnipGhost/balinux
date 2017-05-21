@@ -9,12 +9,12 @@ then
 	f1=$DIRPATH/data/print_iostat
 	f2=$DIRPATH/data/print_cpuinf
 	tf=$DIRPATH/data/iostat_output
-	iostat -xk 28 2 > $tf
+	iostat -k 29 2 > $tf
 else
     f1="$1"
     f2="$2"
     tf=$DIRPATH/data/iostat_output
-    iostat -xk 1 1 > $tf
+    iostat -k 1 1 > $tf
     cat $tf | tail -n +3 >> $tf
 fi
 #----------------------------------------------------------------------

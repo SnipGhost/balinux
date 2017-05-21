@@ -3,6 +3,7 @@
 USERNAME="sysinfo"
 SCRIPTS_DIR="/home/${USERNAME}/scripts"
 INI_CONFIG="${SCRIPTS_DIR}/scripts.ini"
+UPD_TIME=30
 #------------------------------------------------------------------------------------------------------------
 RED='\033[0;31m'
 GRE='\033[0;32m'
@@ -89,7 +90,7 @@ cp -f $PROJECT_PATH/index.php /var/www/html/index.php
 cp -f $PROJECT_PATH/phpinfo.php /var/www/html/phpinfo.php
 cp -f $PROJECT_PATH/sysinfo.php /var/www/html/sysinfo/index.php
 #------------------------------------------------------------------------------------------------------------
-sed -i "1 i <?php \$iniFile=\"${INI_CONFIG}\";?>" /var/www/html/sysinfo/index.php
+sed -i "1 i <?php \$iniFile=\"${INI_CONFIG}\"; \$updateTime=${UPD_TIME}; ?>" /var/www/html/sysinfo/index.php
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Restarting servers ... ${NCC}"
 systemctl start apache2
