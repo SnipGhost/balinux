@@ -22,3 +22,5 @@
   * *  *   *   *  sudo /home/sysinfo/scripts/diskst.sh;
   * *  *   *   *  (sleep 30; sudo /home/sysinfo/scripts/diskst.sh;)
 #--------------------------------------------------------------------
+  * *  *   *   *  sudo curl -o /var/www/html/sysinfo/arch/$(date '+%Y.%m.%d_%H:%M:%S_index.html') http://127.0.0.1/sysinfo/;
+

@@ -61,7 +61,7 @@ then
 	echo -e "${RED}Save /etc/nginx/sites-enabled/default as $CONF_BACKUP/000-default.conf.backup${NCC}"
 fi
 mkdir -p $SCRIPTS_DIR/data
-mkdir -p /var/www/html/sysinfo
+mkdir -p /var/www/html/sysinfo/arch
 touch $INI_CONFIG
 #------------------------------------------------------------------------------------------------------------
 # [1] LOADAVG

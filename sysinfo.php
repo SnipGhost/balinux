@@ -42,6 +42,8 @@
 			echo "<br><span> Filesystems usage </span><br>";
 			echo passthru($ini['diskst'])."<br>";
 		?>
+
+		<div align="right"><span style="color: lime; margin-right: 30px;">By Mikhail Kucherenko, 05.2017</span></div>
 		
 	</body>
 </html>

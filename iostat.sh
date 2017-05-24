@@ -44,7 +44,7 @@ echo "$buffer1" > $f1
 #----------------------------------------------------------------------
 buffer2=$(printf "<table border=\"1\">\n";
 cat $tf | tail -n `expr $lines / 2` | tail -n +2 | head -n 2 |        \
-sed -e 's/avg-cpu: //g' | awk -v LIM1=20 -v LIM2=60                   \
+sed -e 's/avg-cpu: //g' | awk -v LIM1=30 -v LIM2=60                   \
 '{ split($0, k);
    print "<tr>";
    { for (i = 1; i <= 6; i++)
