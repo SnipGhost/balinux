@@ -40,7 +40,7 @@ buffer=$(printf "<table border=\"1\">\n<tr>
 </tr>";
 sudo timeout $t tcpdump -tnn not broadcast | awk -F "[. ]"                    \
 '{print $2"."$3"."$4"."$5" -&gt; "$8"."$9"."$10"."$11}' |                     \
-sort | uniq -c | sort -r | awk '$1 > 1' | awk -F " "                          \
+sort -nr | uniq -c | awk '$1 > 1' | awk -F " "                          \
 '{ print "<tr><td>"NR"</td><td>"$1"</td><td>"$2" -&gt; "$4"</td></tr>" }';
 printf "\n</table>\n";)
 #------------------------------------------------------------------------------
