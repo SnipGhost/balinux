@@ -98,9 +98,9 @@ echo -e "${GRE}Prepare scripts ...${NCC}"
 sudo $SCRIPTS_DIR/netinf.sh $SCRIPTS_DIR/data/curr_netinf
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Installing tools, apache2+php and nginx ...${NCC}"
-apt install -y sysstat elinks apache2 libapache2-mod-php
-systemctl stop apache2
-apt install -y nginx
+sudo apt install -y sysstat elinks apache2 libapache2-mod-php
+sudo systemctl stop apache2
+sudo apt install -y nginx
 #------------------------------------------------------------------------------------------------------------
 echo -e "${GRE}Starting to copy configuration files${NCC}"
 cp -f $PROJECT_PATH/nginx-default.conf /etc/nginx/sites-enabled/default
